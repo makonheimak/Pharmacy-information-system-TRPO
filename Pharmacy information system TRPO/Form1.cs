@@ -9,27 +9,31 @@ namespace Pharmacy_information_system_TRPO
 {
     public partial class Form1 : Form
     {
+        // Строка подключения к базе данных
         private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Максим\Desktop\Pharmacy information system TRPO\Pharmacy information system TRPO\Database.accdb";
 
         public Form1()
         {
             InitializeComponent();
             LoadData();
-            btnAdd.Click += new EventHandler(btnAdd_Click);
-            btnGenerateReport.Click += new EventHandler(btnDelete_Click);
 
-            // категории ComboBox
+            // Обработчики событий для кнопок
+            btnAdd.Click += new EventHandler(btnAdd_Click);
+            btnDelete.Click += new EventHandler(btnDelete_Click);
+
+            // Инициализация категорий для ComboBox
             cmbCategory.Items.Add("Витамин");
             cmbCategory.Items.Add("Анальгетик");
             cmbCategory.Items.Add("Антибиотик");
             cmbCategory.Items.Add("Противовирусное");
 
-            // макс Price
+            // Максимальная цена
             nudPrice.Maximum = 1000000;
 
-            btnDelete.Click += new EventHandler(btnGenerateReport_Click);
+            btnGenerateReport.Click += new EventHandler(btnGenerateReport_Click);
         }
 
+        // Метод для добавления нового продукта в базу данных
         private void btnAdd_Click(object sender, EventArgs e)
         {
             using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -37,6 +41,7 @@ namespace Pharmacy_information_system_TRPO
                 string query = "INSERT INTO Products (ProductName, Quantity, Category, Price) VALUES (@ProductName, @Quantity, @Category, @Price)";
                 using (OleDbCommand command = new OleDbCommand(query, connection))
                 {
+                    // Параметры запроса
                     command.Parameters.AddWithValue("@ProductName", txtProductName.Text);
                     command.Parameters.AddWithValue("@Quantity", nudQuantity.Value);
                     command.Parameters.AddWithValue("@Category", cmbCategory.SelectedItem.ToString());
@@ -50,6 +55,7 @@ namespace Pharmacy_information_system_TRPO
             LoadData();
         }
 
+        // Метод для удаления продукта из базы данных
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dgvProducts.SelectedRows.Count > 0)
@@ -75,6 +81,7 @@ namespace Pharmacy_information_system_TRPO
             }
         }
 
+        // Метод для загрузки данных из базы данных в DataGridView
         private void LoadData()
         {
             using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -87,6 +94,7 @@ namespace Pharmacy_information_system_TRPO
             }
         }
 
+        // Метод для генерации отчета в формате Excel
         private void btnGenerateReport_Click(object sender, EventArgs e)
         {
             using (OleDbConnection connection = new OleDbConnection(connectionString))

@@ -177,6 +177,7 @@
             ClientSize = new Size(1290, 739);
             Controls.Add(panel1);
             Name = "Form1";
+            Text = "Информационная система аптеки";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudPrice).EndInit();
